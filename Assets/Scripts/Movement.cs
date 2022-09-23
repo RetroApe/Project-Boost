@@ -6,19 +6,16 @@ using UnityEngine.UIElements;
 public class Movement : MonoBehaviour
 {
     [SerializeField] float rocketSpeed = 50f;
-    [SerializeField] private float rotationSpeed = 200f;
 
     AudioSource audioSource;
     Rigidbody rb;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ThrustSound();
@@ -52,7 +49,7 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            audioSource.Play();
+            audioSource.PlayOneShot(rocketThrust);
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
