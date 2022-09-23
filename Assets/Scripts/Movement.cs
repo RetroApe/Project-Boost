@@ -8,17 +8,20 @@ public class Movement : MonoBehaviour
     [SerializeField] float rocketSpeed = 50f;
     [SerializeField] private float rotationSpeed = 200f;
 
+    AudioSource audioSource;
     Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        ThrustSound();
         MovePlayer();
     }
 
@@ -43,5 +46,17 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         transform.Rotate(rotationPolarity * Time.deltaTime * Vector3.forward);
         rb.freezeRotation = false;
+    }
+
+    void ThrustSound()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            audioSource.Play();
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            audioSource.Stop();
+        }
     }
 }
