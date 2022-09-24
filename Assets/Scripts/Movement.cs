@@ -8,9 +8,13 @@ public class Movement : MonoBehaviour
     [SerializeField] float rocketSpeed = 50f;
     [SerializeField] float rotationSpeed = 200f;
     [SerializeField] AudioClip rocketThrust;
+    [SerializeField] ParticleSystem leftThruster;
+    [SerializeField] ParticleSystem rightThruster;
+    [SerializeField] ParticleSystem mainThruster;
 
     AudioSource audioSource;
     Rigidbody rb;
+
 
     void Start()
     {
@@ -20,8 +24,38 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        ThrustSound();
+        ThrustEffects();
         MovePlayer();
+    }
+
+    void ThrustEffects()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            audioSource.PlayOneShot(rocketThrust);
+            mainThruster.Play();
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            audioSource.Stop();
+            mainThruster.Stop();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            rightThruster.Play();
+        }
+        else if (Input.GetKeyUp(KeyCode.A))
+        {
+            rightThruster.Stop();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            leftThruster.Play();
+        }
+        else if (Input.GetKeyUp(KeyCode.D))
+        {
+            leftThruster.Stop();
+        }
     }
 
     void MovePlayer()
@@ -45,17 +79,5 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         transform.Rotate(rotationPolarity * Time.deltaTime * Vector3.forward);
         rb.freezeRotation = false;
-    }
-
-    void ThrustSound()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            audioSource.PlayOneShot(rocketThrust);
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            audioSource.Stop();
-        }
     }
 }

@@ -8,23 +8,65 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] float volume = 0.2f;
     [SerializeField] AudioClip deathExplosion;
     [SerializeField] AudioClip success;
-    
+
+    [SerializeField] ParticleSystem deathExplosionParticles;
+    [SerializeField] ParticleSystem successParticles;
+
+    AudioSource audioSource;
+
+
+    bool isTransitioning = false;
+    bool isCheating = false;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        CheatingCheck();
+    }
+    void CheatingCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextScene();
+        }
+        if (Input.GetKeyDown(KeyCode.C) && !isCheating)
+        {
+            isCheating = true;
+            print("Collision turned off!");
+        }
+        else if (Input.GetKeyDown(KeyCode.C) && isCheating)
+        {
+            isCheating = false;
+            print("Collision turned on!");
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {
-        
-        switch(collision.gameObject.tag)
+        if (isTransitioning) return;
+
+        switch (collision.gameObject.tag)
         {
-            case "Enemy":
-                print("Player dies");
-                StartCrashSequence();
+            case "Respawn":
+                print("Start of the level");
                 break;
             case "Finish":
                 print("Player wins");
                 StartWinSequence();
                 break;
-            case "Fuel":
-                print("fuel");
+            //case "Fuel":
+            //    print("fuel");
+            //    break;
+            default:
+                print("Player dies");
+                if (!isCheating)
+                {
+                    StartCrashSequence();
+                }
                 break;
 
         }
@@ -32,13 +74,19 @@ public class CollisionHandler : MonoBehaviour
 
     void StartCrashSequence()
     {
-        GetComponent<AudioSource>().PlayOneShot(deathExplosion, volume);
+        audioSource.Stop();
+        isTransitioning = true;
+        deathExplosionParticles.Play();
+        audioSource.PlayOneShot(deathExplosion, volume);
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", loadDelay);
     }
     void StartWinSequence()
     {
-        GetComponent<AudioSource>().PlayOneShot(success, volume);
+        audioSource.Stop();
+        isTransitioning = true;
+        successParticles.Play();
+        audioSource.PlayOneShot(success, volume);
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextScene", loadDelay);
     }
