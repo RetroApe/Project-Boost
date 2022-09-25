@@ -10405,8 +10405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3633083031606f4bbc7b527f9544347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocketSpeed: 50
-  rotationSpeed: 200
+  rocketSpeed: 25
+  rotationSpeed: 250
   rocketThrust: {fileID: 8300000, guid: 6d11718508a1fa34a9826c8b2ae597ac, type: 3}
   leftThruster: {fileID: 5999793991348471791}
   rightThruster: {fileID: 21390454809078550}

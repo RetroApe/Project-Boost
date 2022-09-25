@@ -5,8 +5,8 @@ using UnityEngine.UIElements;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] float rocketSpeed = 50f;
-    [SerializeField] float rotationSpeed = 200f;
+    [SerializeField] float rocketSpeed = 25f;
+    [SerializeField] float rotationSpeed = 250f;
     [SerializeField] AudioClip rocketThrust;
     [SerializeField] ParticleSystem leftThruster;
     [SerializeField] ParticleSystem rightThruster;

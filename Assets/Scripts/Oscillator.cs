@@ -9,7 +9,7 @@ public class Oscillator : MonoBehaviour
     Vector3 movementVector;
     [SerializeField] Vector3 endingPosition = new Vector3(-2.5f, 12.75f, 0);
     [SerializeField][Range(0, 1)] float interval;
-    [SerializeField] int period = 2;
+    [SerializeField] float period = 2;
 
     public float time = 0f;
 
@@ -24,9 +24,14 @@ public class Oscillator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (period <= Mathf.Epsilon) { return; }
+
         time += Time.deltaTime;
         interval = (time % period) / period;
+        
         interval = SmoothStart(interval) + interval * (SmoothStop(interval) - SmoothStart(interval));
+
+        movementVector = endingPosition - startingPosition;
 
         if ((int)(time / period) % 2 == 0)
         {
